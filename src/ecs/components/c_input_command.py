@@ -6,12 +6,6 @@ class CInputCommand:
         self.key = key
         self.phase = CommandPhase.NA
 
-class CInputMouseCommand:
-    def __init__(self, name:str, mouse:bool) -> None:
-        self.name = name
-        self.mouse = mouse
-        self.phase = CommandPhase.NA
-
 class CommandPhase(Enum):
     NA = 0
     START = 1

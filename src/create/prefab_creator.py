@@ -2,7 +2,7 @@ import random
 import pygame
 import esper
 from src.ecs.components.c_enemy_spawner import CEnemySpawner
-from src.ecs.components.c_input_command import CInputCommand, CInputMouseCommand
+from src.ecs.components.c_input_command import CInputCommand
 
 from src.ecs.components.c_surface import CSurface
 from src.ecs.components.c_transform import CTransform
@@ -75,7 +75,7 @@ def create_input_player(world: esper.World):
     input_up = world.create_entity()
     input_down = world.create_entity()
     input_fire = world.create_entity()
-    mouse_buttons = pygame.mouse.get_pressed()
+    
 
     world.add_component(input_left, 
                         CInputCommand("PLAYER_LEFT", pygame.K_LEFT))
@@ -85,9 +85,10 @@ def create_input_player(world: esper.World):
                         CInputCommand("PLAYER_UP", pygame.K_UP))
     world.add_component(input_down, 
                         CInputCommand("PLAYER_DOWN", pygame.K_DOWN))
-    world.add_component(input_fire,
-                        CInputCommand("PLAYER_FIRE", pygame.K_f))
-    
+    world.add_component(input_fire, 
+                        CInputCommand("PLAYER_FIRE", pygame.BUTTON_LEFT))
+
+
 
 
 

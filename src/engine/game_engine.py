@@ -5,6 +5,7 @@ import math
 from src.ecs.components.c_input_command import CInputCommand, CommandPhase
 from src.ecs.components.c_transform import CTransform
 from src.ecs.components.c_velocity import CVelocity
+from src.ecs.systems.s_collision_bullet_enemy import system_collision_bullet_enemy
 from src.ecs.systems.s_collision_player_enemy import system_collision_player_enemy
 from src.ecs.systems.s_enemy_spawner import system_enemy_spawner
 from src.ecs.systems.s_input_player import system_input_player
@@ -71,7 +72,7 @@ class GameEngine:
     def _create(self):
         self._player_entity = create_player_square(self.ecs_world, self.player_cfg, self.level_01_cfg["player_spawn"])
         self._player_c_v = self.ecs_world.component_for_entity(self._player_entity, CVelocity)
-        self._player_c_p = self.ecs_world.component_for_entity(self._player_entity, CTransform)        
+        self._player_c_p = self.ecs_world.component_for_entity(self._player_entity, CTransform) 
         create_enemy_spawner(self.ecs_world, self.level_01_cfg)
         create_input_player(self.ecs_world)
         self._cursor_entity = self.ecs_world.create_entity()
@@ -92,8 +93,8 @@ class GameEngine:
         system_movement(self.ecs_world, self.delta_time)
         system_screen_bounce(self.ecs_world, self.screen)
         system_screen_bounce_player(self.ecs_world, self.screen)
-        system_collision_player_enemy(
-            self.ecs_world, self._player_entity, self.level_01_cfg)
+        system_collision_player_enemy(self.ecs_world, self._player_entity, self.level_01_cfg)
+        system_collision_bullet_enemy(self.ecs_world)
         self.ecs_world._clear_dead_entities()
 
     def _draw(self):
@@ -145,6 +146,5 @@ class GameEngine:
             elif c_input.phase == CommandPhase.END:
                 self._player_c_v.vel.y -= self.player_cfg["input_velocity"]
         if c_input.name == "PLAYER_FIRE":
-            if c_input.phase == CommandPhase.START:
-                self._fire_bullet()
+            self._fire_bullet()
             
